@@ -23,7 +23,7 @@ const deleteOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const orderId = req.params.id
         const orderToDelete = await orderModel.deleteOrder(orderId)
-        if (!orderToDelete) {
+        if (orderToDelete.deletedCount === 0) {
             throw new ApiError(StatusCodes.BAD_REQUEST, 'Error deleting order')
         }
 
@@ -38,6 +38,7 @@ const updateOrderStatus = async (req: Request, res: Response, next: NextFunction
     try {
         const orderId = req.params.id
         const orderToUpdate = req.body
+        console.log({ orderId });
         const orderStatusToUpdate = await orderModel.updateOrderStatus(orderToUpdate, orderId)
 
         if (!orderStatusToUpdate) {

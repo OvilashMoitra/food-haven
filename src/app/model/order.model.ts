@@ -32,7 +32,12 @@ const addOrder = async (payload: IOrder) => {
 }
 
 const deleteOrder = async (payload: string) => {
+    const orderExist = await OrderModel.exists({ _id: payload })
+    if (!orderExist) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Order not found")
+    }
     const orderToDelete = await OrderModel.deleteOne({ _id: payload })
+    console.log({ orderToDelete, r: 'hi' });
     return orderToDelete;
 }
 
@@ -47,14 +52,14 @@ const updateOrderStatus = async (payload: Partial<IOrder>, id: string) => {
     const orderCurrentStatus = isOrderExist.status
 
 
-    if ((orderCurrentStatus === OrderStatus.pending && payload.status === OrderStatus.confirmed)) {
+    if ((orderCurrentStatus === OrderStatus.pending && payload.status !== OrderStatus.confirmed)) {
         throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid order status transition')
-    } else if (orderCurrentStatus === OrderStatus.confirmed && payload.status === OrderStatus.delivered) {
+    } else if ((orderCurrentStatus === OrderStatus.confirmed && payload.status !== OrderStatus.delivered)) {
         throw new ApiError(StatusCodes.BAD_REQUEST, 'Invalid order status transition')
     }
 
 
-    const orderToUpdate = await FoodModel.findByIdAndUpdate(id, payload, { new: true });
+    const orderToUpdate = await OrderModel.findByIdAndUpdate(id, payload, { new: true });
     return orderToUpdate;
 }
 

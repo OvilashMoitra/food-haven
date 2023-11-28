@@ -37,6 +37,7 @@ const deleteFoodItem = async (req: Request, res: Response, next: NextFunction) =
 const updateFoodItem = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const foodItemId = req.params.id
+        console.log({ foodItemId });
         const foodToUpdate = req.body
         const foodItemToUpdate = await foodModel.updateFoodItem(foodToUpdate, foodItemId)
 
