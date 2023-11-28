@@ -19,63 +19,67 @@ const addOrder = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-const deleteFoodItem = async (req: Request, res: Response, next: NextFunction) => {
+const deleteOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const foodItemId = req.params.id
-        const foodToDelete = await foodModel.deleteFoodItem(foodItemId)
-        if (!foodToDelete) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'Error deleting food item')
+        const orderId = req.params.id
+        const orderToDelete = await orderModel.deleteOrder(orderId)
+        if (!orderToDelete) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, 'Error deleting order')
         }
 
-        sendResponse(res, StatusCodes.ACCEPTED, "Food item deleted", foodToDelete)
+        sendResponse(res, StatusCodes.ACCEPTED, "Order deleted", orderToDelete)
 
     } catch (error) {
         next(error);
     }
 }
 
-const updateFoodItem = async (req: Request, res: Response, next: NextFunction) => {
+const updateOrderStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const foodItemId = req.params.id
-        const foodToUpdate = req.body
-        const foodItemToUpdate = await foodModel.updateFoodItem(foodToUpdate, foodItemId)
+        const orderId = req.params.id
+        const orderToUpdate = req.body
+        const orderStatusToUpdate = await orderModel.updateOrderStatus(orderToUpdate, orderId)
 
-        if (!foodItemToUpdate) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'Error updating food item')
+        if (!orderStatusToUpdate) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, 'Error updating order status')
         }
 
-        sendResponse(res, StatusCodes.ACCEPTED, "Food item updated", foodItemToUpdate)
+        sendResponse(res, StatusCodes.ACCEPTED, "Order status updated", orderStatusToUpdate)
 
     } catch (error) {
         next(error);
     }
 }
 
-const getFoodItem = async (req: Request, res: Response, next: NextFunction) => {
+const getOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const foodItemId = req.params.id
-        const foodItem = await foodModel.getFoodItem(foodItemId)
-        if (!foodItem) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'Error getting food item')
+        const orderId = req.params.id
+        const order = await orderModel.getOrder(orderId)
+        if (!order) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, 'Error getting order')
         }
-        sendResponse(res, StatusCodes.ACCEPTED, "Food item fetched", foodItem)
+        sendResponse(res, StatusCodes.ACCEPTED, "Order fetched", order)
     } catch (error) {
         next(error);
     }
 }
 
-const getAllFoodItem = async (req: Request, res: Response, next: NextFunction) => {
+const getAllOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const allFoodItem = await foodModel.getAllFoodItem()
-        if (!allFoodItem) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'Error getting all food item')
+        const allOrder = await orderModel.getAllOrder()
+        if (!allOrder) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, 'Error getting all order')
         }
-        sendResponse(res, StatusCodes.ACCEPTED, "All Food item fetched", allFoodItem)
+        sendResponse(res, StatusCodes.ACCEPTED, "All order fetched", allOrder)
     } catch (error) {
         next(error);
     }
 }
 
 export const orderController = {
-    addOrder
+    addOrder,
+    deleteOrder,
+    getAllOrder,
+    getOrder,
+    updateOrderStatus
 }
