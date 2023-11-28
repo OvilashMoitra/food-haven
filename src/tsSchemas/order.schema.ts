@@ -6,7 +6,7 @@ export type IOrder = {
     contactNumber: string,
     items: Schema.Types.ObjectId[],
     address: string,
-    price: number,
+    totalPrice?: number,
     status: OrderStatus,
     availability: boolean
 }
