@@ -26,7 +26,7 @@ const deleteReview = async (payload: string) => {
 
 const updateReview = async (payload: Partial<IReview>, id: string) => {
 
-    const ifOrderExist = await OrderModel.exists({ _id: payload.orderId })
+    const ifOrderExist = await ReviewModel.exists({ _id: id })
 
     if (!ifOrderExist) {
         throw new ApiError(StatusCodes.NOT_FOUND, 'Order not found')
@@ -41,15 +41,15 @@ const getReview = async (id: string) => {
     return review
 }
 
-const getReviewByFood = async (orderId: string) => {
-    const foodReview = await ReviewModel.find({ orderId });
+const getAllReview = async () => {
+    const foodReview = await ReviewModel.find({})
     return foodReview
 }
 
 
-export const foodModel = {
+export const reviewModel = {
     getReview,
-    getReviewByFood,
+    getAllReview,
     addReview,
     deleteReview,
     updateReview

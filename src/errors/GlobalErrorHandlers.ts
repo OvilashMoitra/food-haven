@@ -16,7 +16,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     console.log(`globalErrorHandler `, { error })
     let statusCode = 500;
     let message = 'Something went wrong !';
-    let errorMessages = [];
+    let errorMessages: unknown = [];
 
     if (error instanceof ApiError) {
         statusCode = error?.statusCode;
